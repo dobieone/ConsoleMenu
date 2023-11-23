@@ -13,7 +13,7 @@ namespace ConsoleMenu
         private const string SelectedIndicator = "> ";
         private const string NotSelectedIndicator = "  ";
 
-        public Menu AddOption(string name, Action onSelected, bool exit, bool spacer = false)
+        public Menu AddOption(string name, Action onSelected, bool exit = false, bool spacer = false)
         {
             _options.Add(new MenuOption(name, onSelected, exit, spacer));
             return this;
