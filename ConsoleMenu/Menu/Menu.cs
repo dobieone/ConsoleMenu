@@ -6,7 +6,7 @@ namespace ConsoleMenu
     public class Menu
     {
         private List<MenuOption> _options = new List<MenuOption>();
-        private static int _index = 0;
+        private int _index = 0;
         private string _title;
         private bool _underline;
 
@@ -79,10 +79,13 @@ namespace ConsoleMenu
                     }
                     return false;
                 case ConsoleKey.Enter:
-                    _options[_index].OnSelect?.Invoke();
                     var rtn = _options[_index].Exit;
+                    _options[_index].OnSelect?.Invoke();
                     if (!rtn)
+                    {
+                        _index = 0;
                         DrawMenu();
+                    }
                     return rtn;
                 default:
                     return false;
