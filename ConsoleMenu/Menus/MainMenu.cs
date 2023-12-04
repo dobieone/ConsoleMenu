@@ -11,6 +11,7 @@ namespace ConsoleMenu.Menus
         {
             _mnu = new Menu()
                 .AddTitle("Main Menu")
+                .AddCallback(ConsoleKey.Spacebar, () => Console.WriteLine("Space..."))
                 .AddOption(new MenuOption("Sub Menu 1", () => ShowSubMenuOne()))
                 .AddOption(new MenuOption("Sub Menu 2", () => ShowSubMenuTwo()))
                 .AddOption(new MenuOption("Exit", () => Environment.Exit(0)).SetExits().AddSpacer());

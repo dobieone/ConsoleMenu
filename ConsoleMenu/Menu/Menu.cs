@@ -1,12 +1,14 @@
 ﻿using ConsoleMenu;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace ConsoleMenu
 {
     public class Menu
     {
         private List<MenuOption> _options = new List<MenuOption>();
+        private Dictionary<ConsoleKey, Action> _callbacks = new Dictionary<ConsoleKey, Action>();
         private int _index = 0;
         private string _title;
         private bool _underline;
@@ -24,6 +26,12 @@ namespace ConsoleMenu
         {
             _title = title;
             _underline = underline;
+            return this;
+        }
+
+        public Menu AddCallback(ConsoleKey key, Action onPress)
+        {
+            _callbacks[key] = onPress;
             return this;
         }
 
@@ -65,7 +73,8 @@ namespace ConsoleMenu
 
         private bool HandleInput()
         {
-            switch (Console.ReadKey(true).Key)
+            var key = Console.ReadKey(true).Key;
+            switch (key)
             {
                 case ConsoleKey.DownArrow:
                     if (_index + 1 < _options.Count)
@@ -96,7 +105,17 @@ namespace ConsoleMenu
                         return false;
                     }
                 default:
+                    CheckCallback(key);
                     return false;
+            }
+        }
+
+        private void CheckCallback(ConsoleKey key)
+        {
+            if (_callbacks.ContainsKey(key))
+            {
+                var cb = _callbacks[key];
+                cb?.Invoke();
             }
         }
 
