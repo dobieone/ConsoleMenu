@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleMenu;
+using System;
 using System.Collections.Generic;
 
 namespace ConsoleMenu
@@ -13,9 +14,9 @@ namespace ConsoleMenu
         private const string SelectedIndicator = "> ";
         private const string NotSelectedIndicator = "  ";
 
-        public Menu AddOption(string name, Action onSelected, bool exit = false, bool spacer = false)
+        public Menu AddOption(MenuOption option)
         {
-            _options.Add(new MenuOption(name, onSelected, exit, spacer));
+            _options.Add(option);
             return this;
         }
 
@@ -29,6 +30,8 @@ namespace ConsoleMenu
         public bool OutputMenu()
         {
             DrawMenu();
+            if (_options[0].TriggerType == MenuOptionTriggerType.OnSelect)
+                _options[0].OnSelect?.Invoke();
             var exit = false;
             do
             {
@@ -67,28 +70,43 @@ namespace ConsoleMenu
                 case ConsoleKey.DownArrow:
                     if (_index + 1 < _options.Count)
                     {
-                        _index++;
-                        DrawMenu();
+                        HandleOptionChange(1);
                     }
                     return false;
                 case ConsoleKey.UpArrow:
                     if (_index - 1 >= 0)
                     {
-                        _index--;
-                        DrawMenu();
+                        HandleOptionChange(-1);
                     }
                     return false;
                 case ConsoleKey.Enter:
-                    var rtn = _options[_index].Exit;
-                    _options[_index].OnSelect?.Invoke();
-                    if (!rtn)
+                    if (_options[_index].TriggerType == MenuOptionTriggerType.EnterKey)
                     {
-                        _index = 0;
-                        DrawMenu();
+                        var rtn = _options[_index].Exit;
+                        _options[_index].OnSelect?.Invoke();
+                        if (!rtn)
+                        {
+                            _index = 0;
+                            DrawMenu();
+                        }
+                        return rtn;
                     }
-                    return rtn;
+                    else
+                    {
+                        return false;
+                    }
                 default:
                     return false;
+            }
+        }
+
+        private void HandleOptionChange(int amount)
+        {
+            _index += amount;
+            DrawMenu();
+            if (_options[_index].TriggerType == MenuOptionTriggerType.OnSelect)
+            {
+                _options[_index].OnSelect?.Invoke();
             }
         }
     }

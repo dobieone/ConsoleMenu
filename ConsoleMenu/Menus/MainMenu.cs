@@ -11,9 +11,9 @@ namespace ConsoleMenu.Menus
         {
             _mnu = new Menu()
                 .AddTitle("Main Menu")
-                .AddOption("Sub Menu 1", () => ShowSubMenuOne(), false)
-                .AddOption("Sub Menu 2", () => ShowSubMenuTwo(), false)
-                .AddOption("Exit", () => Environment.Exit(0), false, true);
+                .AddOption(new MenuOption("Sub Menu 1", () => ShowSubMenuOne()))
+                .AddOption(new MenuOption("Sub Menu 2", () => ShowSubMenuTwo()))
+                .AddOption(new MenuOption("Exit", () => Environment.Exit(0)).SetExits().AddSpacer());
         }
 
         public void Show()

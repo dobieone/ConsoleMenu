@@ -16,9 +16,9 @@ namespace ConsoleMenu.Menus
         {
             _mnu = new Menu()
                 .AddTitle("Sub Menu One")
-                .AddOption("Sub Menu 1 - 1", () => Message.Write("Sub Menu 1 - 1"), false)
-                .AddOption("Sub Menu 1 - 2", () => Message.Write("Sub Menu 1 - 2"), false)
-                .AddOption("Back", null, true, true);
+                .AddOption(new MenuOption("Sub Menu 1 - 1", () => Message.Write("Sub Menu 1 - 1")))
+                .AddOption(new MenuOption("Sub Menu 1 - 2", () => Message.Write("Sub Menu 1 - 2")))
+                .AddOption(new MenuOption("Back", null).SetExits().AddSpacer());
         }
 
         public void Show()

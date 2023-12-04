@@ -46,6 +46,7 @@
     <Compile Include="Menu\Menu.cs" />
     <Compile Include="Menu\MenuOption.cs" />
     <Compile Include="Helpers\Message.cs" />
+    <Compile Include="Menu\MenuOptionTriggerType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Menus\MainMenu.cs" />
