@@ -81,12 +81,14 @@ namespace ConsoleMenu
                     {
                         HandleOptionChange(1);
                     }
+                    CheckCallback(key);
                     return false;
                 case ConsoleKey.UpArrow:
                     if (_index - 1 >= 0)
                     {
                         HandleOptionChange(-1);
                     }
+                    CheckCallback(key);
                     return false;
                 case ConsoleKey.Enter:
                     if (_options[_index].TriggerType == MenuOptionTriggerType.EnterKey)
@@ -116,6 +118,7 @@ namespace ConsoleMenu
             {
                 var cb = _callbacks[key];
                 cb?.Invoke();
+                HandleOptionChange(0);
             }
         }
 
