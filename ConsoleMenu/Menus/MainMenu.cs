@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace ConsoleMenu.Menus
 {
@@ -9,12 +10,17 @@ namespace ConsoleMenu.Menus
 
         public MainMenu()
         {
+            var exit = new MenuOption("Exit", () => Environment.Exit(0))
+                .SetExits()
+                .AddSpacer();
+
             _mnu = new Menu()
                 .AddTitle("Main Menu")
-                .AddCallback(ConsoleKey.Spacebar, () => Console.WriteLine("Space..."))
+                .AddHeader("Use arrow keys to select to move indicator, enter to select...")
+                .AddCallback(ConsoleKey.Spacebar, () => Debug.WriteLine("Space Pressed..."))
                 .AddOption(new MenuOption("Sub Menu 1", () => ShowSubMenuOne()))
                 .AddOption(new MenuOption("Sub Menu 2", () => ShowSubMenuTwo()))
-                .AddOption(new MenuOption("Exit", () => Environment.Exit(0)).SetExits().AddSpacer());
+                .AddOption(exit);
         }
 
         public void Show()

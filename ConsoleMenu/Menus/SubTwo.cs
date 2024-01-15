@@ -13,11 +13,15 @@ namespace ConsoleMenu.Menus
 
         public SubTwo()
         {
+            var back = new MenuOption("Back", null)
+                .SetExits()
+                .AddSpacer();
+
             _mnu = new Menu()
                 .AddTitle("Sub Menu Two")
                 .AddOption(new MenuOption("Sub Menu 2 - 1", () => Message.Write("Sub Menu 2 - 1")))
                 .AddOption(new MenuOption("Sub Menu 2 - 2", () => Message.Write("Sub Menu 2 - 2")))
-                .AddOption(new MenuOption("Back", null).SetExits().AddSpacer());
+                .AddOption(back);
         }
 
         public void Show()

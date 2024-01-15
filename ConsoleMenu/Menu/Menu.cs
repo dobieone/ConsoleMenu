@@ -1,6 +1,7 @@
 ﻿using ConsoleMenu;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace ConsoleMenu
@@ -12,6 +13,10 @@ namespace ConsoleMenu
         private int _index = 0;
         private string _title;
         private bool _underline;
+        private string _header;
+        private string _footer;
+        private bool _clear = true;
+        private bool _startOnExit = false;
 
         private const string SelectedIndicator = "> ";
         private const string NotSelectedIndicator = "  ";
@@ -35,8 +40,33 @@ namespace ConsoleMenu
             return this;
         }
 
+        public Menu SetClear(bool clear)
+        {
+            _clear = clear;
+            return this;
+        }
+
+        public Menu SetStartOnExit(bool startOnExit)
+        {
+            _startOnExit = startOnExit;
+            return this;
+        }
+
+        public Menu AddFooter(string footer)
+        {
+            _footer = footer;
+            return this;
+        }
+
+        public Menu AddHeader(string header)
+        {
+            _header = header;
+            return this;
+        }
+
         public bool OutputMenu()
         {
+            SetStartIndex();
             DrawMenu();
             if (_options[0].TriggerType == MenuOptionTriggerType.OnSelect)
                 _options[0].OnSelect?.Invoke();
@@ -51,7 +81,7 @@ namespace ConsoleMenu
 
         private void DrawMenu()
         {
-            Console.Clear();
+            ClearConsole();
             if (!string.IsNullOrEmpty(_title))
             {
                 Console.WriteLine($"{NotSelectedIndicator}{_title}");
@@ -59,6 +89,11 @@ namespace ConsoleMenu
                 {
                     Console.WriteLine($"{NotSelectedIndicator}{new string('-', _title.Length)}");
                 }
+                Console.WriteLine();
+            }
+            if (!string.IsNullOrEmpty(_header))
+            {
+                Console.WriteLine($"{NotSelectedIndicator}{_header}");
                 Console.WriteLine();
             }
             for (int i = 0; i < _options.Count; i++)
@@ -69,6 +104,11 @@ namespace ConsoleMenu
                 Console.WriteLine($"{prefix}{_options[i].Name}");
             }
             Console.WriteLine();
+            if (!string.IsNullOrEmpty(_footer))
+            {
+                Console.WriteLine($"{NotSelectedIndicator}{_footer}");
+                Console.WriteLine();
+            }
         }
 
         private bool HandleInput()
@@ -97,7 +137,7 @@ namespace ConsoleMenu
                         _options[_index].OnSelect?.Invoke();
                         if (!rtn)
                         {
-                            _index = 0;
+                            SetStartIndex();
                             DrawMenu();
                         }
                         return rtn;
@@ -130,6 +170,31 @@ namespace ConsoleMenu
             {
                 _options[_index].OnSelect?.Invoke();
             }
+        }
+
+        private void ClearConsole()
+        {
+            if (_clear)
+            {
+                Console.Clear();
+            }
+        }
+
+        private void SetStartIndex()
+        {
+            var i = 0;
+            if (_startOnExit)
+            {
+                var option = _options.Where(o => o.Exit == true).FirstOrDefault();
+                i = _options.IndexOf(option);
+            }
+            _index = i;
+        }
+
+        public void Clear()
+        {
+            _options.Clear();
+            _callbacks.Clear();
         }
     }
 }
