@@ -116,16 +116,16 @@ var opt = new MenuOption("Menu Option Name", () => CallBack())
 #### Exits
 Will exit the menu when selected return control back to the caller.
 ```c#
-var opt.SetExits();
+opt.SetExits();
 ```
 #### Spacer
 Adds a spacer to the menu option, spacer is rendered before the menu is printed.
 ```c#
-var opt.AddSpacer();
+opt.AddSpacer();
 ```
 #### Trigger Type
 Set the type of trigger to be used, Enter Key Pressed or On Select
 
 ```c#
-var opt.SetTriggerType(MenuOptionTriggerType.OnSelect);
+opt.SetTriggerType(MenuOptionTriggerType.OnSelect);
 ```
